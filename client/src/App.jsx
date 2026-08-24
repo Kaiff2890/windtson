@@ -42,8 +42,8 @@ export default function App() {
             <Route path="/get-started" element={<ProtectedRoute><GetStarted /></ProtectedRoute>} />
             <Route path="/applications" element={<ProtectedRoute><Applications /></ProtectedRoute>} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="/admin/applications" element={<ProtectedRoute><AdminApplications /></ProtectedRoute>} />
-            <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/admin/applications" element={<AdminRoute><AdminApplications /></AdminRoute>} />
+            <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           </Routes>
         </AuthProvider>
       </main>
@@ -59,6 +59,14 @@ function ProtectedRoute({ children }) {
   const { user, loading } = useAuth()
   if (loading) return <div>Loading...</div>
   if (!user) return <div>Please <Link to="/login">login</Link></div>
+  return children
+}
+
+function AdminRoute({ children }) {
+  const { user, loading } = useAuth()
+  if (loading) return <div>Loading...</div>
+  if (!user) return <div>Please <Link to="/login">login</Link></div>
+  if (user.role !== 'ADMIN') return <div>Admin access required.</div>
   return children
 }
 
