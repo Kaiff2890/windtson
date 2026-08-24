@@ -18,15 +18,20 @@ jobs:
         env:
           DEPLOY_URL: ${{ secrets.DEPLOY_URL }}
           SEED_API_TOKEN: ${{ secrets.SEED_API_TOKEN }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
         run: |
           if [ -z "$DEPLOY_URL" ] || [ -z "$SEED_API_TOKEN" ]; then
             echo "Set secrets DEPLOY_URL and SEED_API_TOKEN in repository settings"; exit 1
           fi
           echo "Calling $DEPLOY_URL/internal/seed-admin"
+          if [ -z "$ADMIN_EMAIL" ] || [ -z "$ADMIN_PASSWORD" ]; then
+            echo "Set secrets ADMIN_EMAIL and ADMIN_PASSWORD in repository settings"; exit 1
+          fi
           RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "$DEPLOY_URL/internal/seed-admin" \
             -H "Content-Type: application/json" \
             -H "X-SEED-TOKEN: $SEED_API_TOKEN" \
-            -d '{"email":"arbiya@windtson.com","password":"arbiya123","name":"Arbiya","mobile":"0000000000"}')
+            -d "{\"email\":\"$ADMIN_EMAIL\",\"password\":\"$ADMIN_PASSWORD\",\"name\":\"Winston Admin\",\"mobile\":\"0000000000\"}")
           BODY=$(echo "$RESPONSE" | sed '$d')
           STATUS=$(echo "$RESPONSE" | tail -n1)
           echo "Status: $STATUS"
