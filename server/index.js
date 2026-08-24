@@ -13,7 +13,7 @@ import path from 'path'
 dotenv.config()
 
 const app = express()
-app.use(cors())
+app.use(cors({ origin: process.env.CLIENT_URL ? process.env.CLIENT_URL.split(',') : true }))
 app.use(express.json())
 
 const PORT = process.env.PORT || 5000

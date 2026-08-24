@@ -12,28 +12,15 @@ import AdminDashboard from './pages/AdminDashboard'
 
 export default function App() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="bg-white shadow">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="text-2xl font-bold">Windtson Info</div>
-            <nav className="hidden md:flex gap-6 ml-8">
-              <Link to="/">Home</Link>
-              <Link to="/about">About Us</Link>
-              <Link to="/what-we-do">What We Do</Link>
-              <Link to="/careers">Careers</Link>
-              <Link to="/contact">Contact</Link>
-            </nav>
-          </div>
+    <AuthProvider>
+      <div className="site-shell">
+        <header className="site-header">
+          <Link to="/" className="brand"><span className="brand-mark">W</span><span>WINSTON <small>/ TECH</small></span></Link>
+          <nav className="main-nav"><Link to="/">Home</Link><Link to="/careers">Careers</Link><Link to="/what-we-do">Business</Link><Link to="/about">About</Link><Link to="/contact">Contact</Link></nav>
+          <AuthLinks />
+        </header>
 
-          <AuthProvider>
-            <AuthLinks />
-          </AuthProvider>
-        </div>
-      </header>
-
-      <main className="flex-1 container mx-auto px-6 py-10">
-        <AuthProvider>
+        <main className="site-main">
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
@@ -45,13 +32,11 @@ export default function App() {
             <Route path="/admin/applications" element={<AdminRoute><AdminApplications /></AdminRoute>} />
             <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           </Routes>
-        </AuthProvider>
-      </main>
+        </main>
 
-      <footer className="bg-white border-t py-8">
-        <div className="container mx-auto px-6 text-sm text-slate-600">© 2026 Windtson Info</div>
-      </footer>
-    </div>
+        <footer className="site-footer"><div><Link to="/" className="brand"><span className="brand-mark">W</span><span>WINSTON <small>/ TECH</small></span></Link><p>Where ambition meets success.</p></div><div className="footer-nav"><Link to="/careers">Careers</Link><Link to="/what-we-do">Business</Link><Link to="/about">Why Winston</Link><Link to="/contact">Enquiry</Link></div><small>© 2026 Winston Technologies</small></footer>
+      </div>
+    </AuthProvider>
   )
 }
 
@@ -84,43 +69,6 @@ function AuthLinks() {
 }
 
 function Landing() {
-  return (
-    <section className="grid gap-8">
-      <div className="grid md:grid-cols-2 gap-6 items-center">
-        <div>
-          <h1 className="text-4xl md:text-6xl font-extrabold">Build Your Career With Windtson Info</h1>
-          <p className="mt-4 text-lg text-slate-600">Connecting candidates with the right opportunities and helping companies find great talent.</p>
-          <div className="mt-6 flex gap-4">
-            <Link to="/register" className="px-6 py-3 bg-sky-600 text-white rounded">Get Started</Link>
-            <Link to="/what-we-do" className="px-6 py-3 border rounded">Learn More</Link>
-          </div>
-        </div>
-        <div className="hidden md:block">
-          <div className="h-64 bg-gradient-to-br from-sky-500 to-indigo-600 rounded-lg shadow-lg" />
-        </div>
-      </div>
-
-      <section>
-        <h2 className="text-2xl font-bold">What We Do</h2>
-        <div className="mt-4 grid md:grid-cols-3 gap-4">
-          <Card title="Recruitment" />
-          <Card title="Career Opportunities" />
-          <Card title="Candidate Registration" />
-          <Card title="Job Matching" />
-          <Card title="Career Support" />
-          <Card title="Employer Services" />
-        </div>
-      </section>
-    </section>
-  )
-}
-
-function Card({ title }) {
-  return (
-    <div className="p-6 bg-white rounded-lg shadow-sm">
-      <h3 className="font-semibold">{title}</h3>
-      <p className="mt-2 text-sm text-slate-600">Professional {title.toLowerCase()} services.</p>
-    </div>
-  )
+  return <section className="landing"><div className="hero-copy"><span className="eyebrow">INDEPENDENT TECHNOLOGY PARTNER / 2026</span><h1>Where ambition<br /><em>meets success.</em></h1><p>Connecting people, opportunities, businesses and technology.</p><div className="hero-actions"><Link to="/what-we-do" className="primary-button">Explore Winston <span>↗</span></Link><Link to="/contact" className="secondary-button">General enquiry <span>→</span></Link></div></div><div className="hero-art"><div className="orbit orbit-one"></div><div className="orbit orbit-two"></div><div className="art-label">PEOPLE<br />+<br />POSSIBILITY</div></div><section className="intro-band"><span className="eyebrow dark">01 / WHY WINSTON</span><div><h2>Ambition is a direction.<br /><span>We help you find the way.</span></h2><p>We bring people, opportunities, business and technology together to create meaningful growth. Practical solutions designed to move you forward.</p><Link to="/about" className="inline-link">More about Winston ↗</Link></div></section><section className="services-band"><span className="eyebrow">02 / EXPLORE WHAT WE DO</span><h2>Pick your <em>direction.</em></h2><div className="service-cards"><Link to="/careers"><small>01</small><h3>Careers</h3><p>Find opportunities that fit your ambition.</p><span>Explore ↗</span></Link><Link to="/what-we-do"><small>02</small><h3>Business</h3><p>Practical solutions for meaningful growth.</p><span>Explore ↗</span></Link><Link to="/what-we-do"><small>03</small><h3>Technology</h3><p>Digital systems built for what’s next.</p><span>Explore ↗</span></Link></div></section></section>
 }
 

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon index.js --watch .",
     "start": "node index.js",
+    "seed:admin": "node seed/adminSeed.js",
     "test:uploads": "node upload-tests.js"
   },
   "dependencies": {
