@@ -1,0 +1,36 @@
+name: Seed Deployed Site
+
+on:
+  workflow_dispatch:
+
+jobs:
+  seed:
+    name: Seed admin on deployed site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Call seed endpoint
+        env:
+          DEPLOY_URL: ${{ secrets.DEPLOY_URL }}
+          SEED_API_TOKEN: ${{ secrets.SEED_API_TOKEN }}
+        run: |
+          if [ -z "$DEPLOY_URL" ] || [ -z "$SEED_API_TOKEN" ]; then
+            echo "Set secrets DEPLOY_URL and SEED_API_TOKEN in repository settings"; exit 1
+          fi
+          echo "Calling $DEPLOY_URL/internal/seed-admin"
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "$DEPLOY_URL/internal/seed-admin" \
+            -H "Content-Type: application/json" \
+            -H "X-SEED-TOKEN: $SEED_API_TOKEN" \
+            -d '{"email":"arbiya@windtson.com","password":"arbiya123","name":"Arbiya","mobile":"0000000000"}')
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          STATUS=$(echo "$RESPONSE" | tail -n1)
+          echo "Status: $STATUS"
+          echo "Body: $BODY"
+          if [ "$STATUS" != "200" ]; then
+            echo "Seed failed"; exit 1
+          fi
