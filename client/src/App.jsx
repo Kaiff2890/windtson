@@ -66,7 +66,7 @@ function AdminRoute({ children }) {
   const { user, loading } = useAuth()
   if (loading) return <div>Loading...</div>
   if (!user) return <div>Please <Link to="/login">login</Link></div>
-  if (user.role !== 'ADMIN') return <div>Admin access required.</div>
+  if (user.role !== 'ADMIN') return <div>Administrator access required. <Link to="/dashboard">Return to dashboard</Link></div>
   return children
 }
 
